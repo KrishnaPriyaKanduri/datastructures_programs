@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *head, *tail = NULL;
+
+void create(int data) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = data;
+    newnode->next = NULL;
+    if (head == NULL) {
+        head = newnode;
+        tail = newnode;
+        tail->next = head;  // Make it circular
+    } else {
+        tail->next = newnode;
+        tail = tail->next;
+        tail->next = head;  // Make it circular
+    }
+}
+
+void linkedlisttraversal(struct node *ptr) {
+    struct node *temp = ptr;
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("\n");
+}
+
+struct node *insertatfirst(struct node *head, int data) {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = data;
+    ptr->next = head;
+    head = ptr;
+    tail->next = head;  // Update tail to maintain circularity
+    return head;
+}
+
+struct node *insertatpos(struct node *head, int pos, int data) {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    struct node *temp = head;
+    int i = 0;
+    while (i != pos - 1) {
+        temp = temp->next;
+        i++;
+    }
+    ptr->data = data;
+    ptr->next = temp->next;
+    temp->next = ptr;
+    return head;
+}
+
+struct node *insertatlast(struct node *head, int data) {
+    struct node *ptr = (struct node *)malloc(sizeof(struct node));
+    ptr->data = data;
+    ptr->next = head;  // Make it circular
+    tail->next = ptr;  // Update tail to maintain circularity
+    tail = ptr;
+    return head;
+}
+
+struct node *deleteatfirst(struct node *head) {
+    struct node *ptr = head;
+    head = head->next;
+    tail->next = head;  // Update tail to maintain circularity
+    free(ptr);
+    return head;
+}
+
+struct node *deleteatpos(struct node *head, int pos) {
+    struct node *ptr = head;
+    struct node *q = head->next;
+    for (int i = 0; i < pos - 1; i++) {
+        ptr = ptr->next;
+        q = q->next;
+    }
+    ptr->next = q->next;
+    free(q);
+    return head;
+}
+
+struct node *deleteatlast(struct node *head) {
+    struct node *ptr = head;
+    struct node *q = head->next;
+    while (q->next != head) {
+        ptr = ptr->next;
+        q = q->next;
+    }
+    ptr->next = head;  // Make it circular
+    tail = ptr;        // Update tail to maintain circularity
+    free(q);
+    return head;
+}
+
+int main() {
+    create(10);
+    create(20);
+    create(30);
+    linkedlisttraversal(head);
+    head = insertatfirst(head, 60);
+    linkedlisttraversal(head);
+    head = insertatpos(head, 2, 50);
+    linkedlisttraversal(head);
+    head = insertatlast(head, 70);
+    linkedlisttraversal(head);
+    head = deleteatfirst(head);
+    linkedlisttraversal(head);
+    head = deleteatpos(head, 2);
+    linkedlisttraversal(head);
+    head = deleteatlast(head);
+    linkedlisttraversal(head);
+
+    // Free memory for circular linked list
+    struct node *temp = head;
+    do {
+        struct node *nextNode = temp->next;
+        free(temp);
+        temp = nextNode;
+    } while (temp != head);
+
+    return 0;
+}
