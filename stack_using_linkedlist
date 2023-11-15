@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node*next;
+};
+struct node*top;
+void push(int data){
+    struct node*newnode=(struct node*)malloc(sizeof(struct node));
+    newnode->data=data;
+    newnode->next=NULL;
+    if(top==NULL){
+        top=newnode;
+    }
+    else{
+        newnode->next=top;
+        top=newnode;
+    }
+}
+void pop(){
+    if(top==NULL){
+        printf("stack underflow");
+    }
+    else{
+        printf("%d",top->data);
+        struct node*temp;
+        temp=top->next;
+        top->next=NULL;
+        top=temp;
+    }
+}
+void display(){
+    struct node*temp=top;
+    while(temp!=NULL){
+        printf("%d",temp->data);
+        temp=temp->next;
+    }
+}
+int main(){
+      int choice;
+  int i=1;
+  while(i!=0){
+    printf("enter the choice\n1.push()\n2.pop()\n3.display()\n4.quit\n");
+    scanf("%d",&choice);
+    switch(choice){
+      case 1:int value;
+      printf("enter the value");
+      scanf("%d",&value);
+      push(value);
+      break;
+      case 2:pop();
+      break;
+      case 3:display();
+      break;
+      case 4:printf("exiting the program");
+      i=0;
+      break;
+    default:printf("chose correct value");
+  }
+  }
+  return 0;
+}
