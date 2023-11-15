@@ -1,0 +1,47 @@
+#include<stdio.h>
+#define size 5
+int queue[size];
+int f = -1;
+int r = -1;
+
+void enqueue(int value) {
+    if (r == size - 1) {
+        printf("Queue overflow\n");
+    } else {
+        if (f == -1) {
+            f = 0;
+        }
+        r++;
+        queue[r] = value;
+    }
+}
+
+void dequeue() {
+    if (f == -1 || f > r) {
+        printf("Queue underflow\n");
+    } else {
+        printf("Popped element is %d\n", queue[f]);
+        f++;
+    }
+}
+
+void display() {
+    if (f > r || f == -1) {
+        printf("Queue is empty\n");
+    } else {
+        for (int i = f; i <= r; i++) {
+            printf("%d ", queue[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    dequeue();
+    display();
+
+    return 0;
+}
